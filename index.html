@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Java em N&iacute;veis</title>
+<meta name="description" content="Quiz de Java com resumo de teoria, perguntas de m&uacute;ltipla escolha, exerc&iacute;cios de c&oacute;digo e cron&ocirc;metro. Do b&aacute;sico &agrave; heran&ccedil;a e cole&ccedil;&otilde;es.">
+<meta name="theme-color" content="#e8ecf1" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0e1319" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Java em N&iacute;veis">
+<meta property="og:description" content="Quiz de Java com resumo de teoria, perguntas de m&uacute;ltipla escolha, exerc&iacute;cios de c&oacute;digo e cron&ocirc;metro. Do b&aacute;sico &agrave; heran&ccedil;a e cole&ccedil;&otilde;es.">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23c96200'/%3E%3Ctext x='16' y='23' font-family='monospace' font-size='20' font-weight='700' text-anchor='middle' fill='white'%3EJ%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="card">
+  <div class="tabbar">
+    <div class="tab" id="tabName">Quiz.java</div>
+    <div class="tabmeta" id="tabmeta">int pontos = <b id="tabScore">0</b>;</div>
+  </div>
+
+  <!-- Tela inicial -->
+  <section class="screen" id="screen-home">
+    <div class="stack">
+      <p class="eyebrow">// treine Java do básico à orientação a objetos</p>
+      <h1>Java em <span>Níveis</span></h1>
+      <p class="lead">Cada nível começa com um resumo rápido do conteúdo e depois segue para perguntas de múltipla escolha com trechos de código reais. Toda resposta vem com uma explicação, e os níveis mais difíceis valem mais pontos.</p>
+    </div>
+
+    <div class="field">
+      <label class="label" for="player-name">Seu nome (opcional)</label>
+      <input class="input" id="player-name" type="text" maxlength="24" autocomplete="given-name" placeholder="Ex.: Ana">
+    </div>
+
+    <div class="stack">
+      <span class="label">Escolha o nível</span>
+      <p class="record" id="home-records" hidden></p>
+      <div class="levels" id="levels"></div>
+    </div>
+
+    <div class="share" data-contexto="home">
+      <span class="label">Compartilhe com amigos</span>
+      <div class="share-row">
+        <button class="btn" type="button" data-acao="copiar">Compartilhar quiz</button>
+        <a class="btn ghost" data-acao="whatsapp" target="_blank" rel="noopener">WhatsApp</a>
+        <a class="btn ghost" data-acao="linkedin" target="_blank" rel="noopener">LinkedIn</a>
+        <button class="btn ghost" type="button" data-acao="nativo" hidden>Mais…</button>
+      </div>
+      <p class="hint">Toque em "Compartilhar quiz" para copiar o link. Endereço: <span class="share-url"></span></p>
+    </div>
+
+    <div class="reset-row">
+      <p class="hint">Seu nome e seus recordes ficam salvos só neste navegador.</p>
+      <button class="btn link" id="btn-reset" type="button">Apagar meus dados salvos</button>
+    </div>
+  </section>
+
+  <!-- Tela de teoria (resumo antes do quiz) -->
+  <section class="screen" id="screen-study" hidden>
+    <div class="quiz-row">
+      <span class="chip" id="study-level"></span>
+      <span class="counter" id="study-time"></span>
+    </div>
+
+    <div class="stack">
+      <p class="eyebrow" id="study-eyebrow"></p>
+      <h2 class="study-title" id="study-title"></h2>
+      <p class="lead" id="study-lead"></p>
+    </div>
+
+    <nav class="study-index" id="study-index" aria-label="Tópicos do resumo"></nav>
+
+    <div class="study-body" id="study-body"></div>
+
+    <div class="study-cta">
+      <p id="study-cta-text"></p>
+      <div class="actions">
+        <button class="btn ghost" id="btn-study-back" type="button">Trocar de nível</button>
+        <button class="btn accent" id="btn-start" type="button"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tela do quiz -->
+  <section class="screen" id="screen-quiz" hidden>
+    <div class="quiz-head">
+      <div class="quiz-row">
+        <span class="chip" id="quiz-level"></span>
+        <span class="counter" id="quiz-counter"></span>
+      </div>
+      <div class="timer" id="timer">
+        <span class="clock" id="clock" role="timer" aria-label="Tempo restante">00:00</span>
+        <div class="bar" id="timer-bar" aria-hidden="true"><i></i></div>
+      </div>
+      <div class="bar" role="progressbar" aria-label="Progresso" aria-valuemin="0" id="quiz-bar"><i></i></div>
+    </div>
+
+    <div class="question">
+      <p class="eyebrow" id="quiz-type"></p>
+      <h2 id="quiz-question"></h2>
+      <pre class="code" id="quiz-code" hidden></pre>
+    </div>
+
+    <div class="options" id="quiz-options"></div>
+
+    <div class="code-answer" id="code-answer" hidden>
+      <div class="editor" id="editor">
+        <div class="editor-bar">
+          <span class="editor-file">Solucao.java</span>
+          <span id="editor-pos">Ln 1, Col 1</span>
+        </div>
+        <div class="editor-body">
+          <pre class="gutter" id="editor-gutter" aria-hidden="true">1</pre>
+          <textarea id="editor-input" rows="8" wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Editor de código Java" placeholder="// escreva seu código Java aqui"></textarea>
+        </div>
+      </div>
+      <p class="editor-msg" id="editor-msg" hidden>Escreva sua resposta no editor antes de enviar.</p>
+      <div class="actions">
+        <button class="btn accent" id="btn-submit-code" type="button">Enviar código e validar</button>
+      </div>
+    </div>
+
+    <div class="feedback" id="quiz-feedback" aria-live="polite" hidden>
+      <div class="feedback-title" id="feedback-title"></div>
+      <div class="feedback-body" id="feedback-text"></div>
+    </div>
+
+    <div class="quiz-row">
+      <p class="hint" id="quiz-hint">Atalho: teclas <kbd>1</kbd> a <kbd>4</kbd></p>
+      <div class="actions">
+        <button class="btn link" id="btn-quit" type="button">Sair</button>
+        <button class="btn ghost" id="btn-theory" type="button">Revisar teoria</button>
+        <button class="btn" id="btn-next" type="button" hidden>Próxima pergunta →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tela de resultados -->
+  <section class="screen" id="screen-result" hidden>
+    <p class="eyebrow" id="result-eyebrow"></p>
+    <div class="result-top">
+      <div class="ring" id="result-ring"><div><strong id="result-pct">0%</strong><small>aproveitamento</small></div></div>
+      <div class="result-msg">
+        <h2 id="result-title"></h2>
+        <p id="result-text"></p>
+        <p class="record" id="result-record" hidden></p>
+      </div>
+    </div>
+
+    <div class="stats" id="stats">
+      <div class="stat"><span class="label">Pontos</span><span class="v" id="stat-points"></span><span class="go" id="stat-time"></span></div>
+      <button class="stat ok" type="button" data-rev="ok"><span class="label">Acertos</span><span class="v" id="stat-ok"></span><span class="go">ver revisão →</span></button>
+      <button class="stat bad" type="button" data-rev="bad"><span class="label">Erros</span><span class="v" id="stat-bad"></span><span class="go">ver revisão →</span></button>
+      <button class="stat skip" type="button" data-rev="skip" id="stat-skip" hidden><span class="label">Sem resposta</span><span class="v" id="stat-skip-n"></span><span class="go">ver revisão →</span></button>
+    </div>
+    <p class="hint">Toque em Acertos ou Erros para rever cada pergunta, a sua resposta, a resposta correta e a explicação.</p>
+
+    <div class="share" data-contexto="resultado">
+      <span class="label">Desafie seus amigos</span>
+      <div class="share-row">
+        <button class="btn" type="button" data-acao="copiar">Compartilhar quiz</button>
+        <a class="btn ghost" data-acao="whatsapp" target="_blank" rel="noopener">WhatsApp</a>
+        <a class="btn ghost" data-acao="linkedin" target="_blank" rel="noopener">LinkedIn</a>
+        <button class="btn ghost" type="button" data-acao="nativo" hidden>Mais…</button>
+      </div>
+      <p class="hint">O WhatsApp já leva o seu placar na mensagem. No LinkedIn, a mensagem é copiada para você colar no post. Endereço: <span class="share-url"></span></p>
+    </div>
+
+    <div class="actions">
+      <button class="btn ghost" id="btn-menu" type="button">Menu principal</button>
+      <button class="btn ghost" id="btn-next-level" type="button" hidden></button>
+      <button class="btn" id="btn-again" type="button">Jogar novamente</button>
+    </div>
+  </section>
+</main>
+
+<!-- Revisão detalhada das respostas -->
+<div class="overlay" id="review-overlay" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="review-title">
+    <div class="sheet-head">
+      <h3 id="review-title">Revisão das respostas</h3>
+      <button class="btn link" id="review-close" type="button">Fechar ✕</button>
+    </div>
+    <div class="seg" id="review-tabs" role="tablist" aria-label="Filtrar revisão"></div>
+    <div class="sheet-body" id="review-body"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script src="script.js"></script>
+</body>
+</html>
